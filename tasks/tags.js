@@ -108,7 +108,15 @@ module.exports = function (grunt) {
 
         // verify template tags exist and in logic order
         if (closeTagLocation < openTagLocation || openTagLocation === -1 || closeTagLocation === -1) {
-            grunt.fail.fatal('invalid template tags in ' + fileName);
+            var failPoints;
+            
+            if (openTagLocation === -1 && closeTagLocation === -1) {
+                failPoints = 'Oops: ' + this.options.openTag + '\n' + 'Oops: ' + this.options.closeTag;
+            } else {
+                failPoints = 'Oops: ' + ((openTagLocation === -1) ? this.options.openTag : this.options.closeTag);
+            }
+
+            grunt.fail.fatal('invalid template tag in ' + fileName + '\n'+ failPoints);
         }
     };
 
